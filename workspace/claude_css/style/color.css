@@ -1,0 +1,9 @@
+p {
+    /* rgb 표현법 */
+    color: green;
+}
+
+span {
+    /* 16진수 표현법 */
+    color: #00FF00;
+}

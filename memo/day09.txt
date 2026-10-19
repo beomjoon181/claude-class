@@ -1,0 +1,19 @@
+1. playwright
+   - Microsoft에서 개발한 웹 자동화 테스트를 위한 무료 오픈소스 라이브러리
+
+2. Sequential thinking mcp
+   - AI에게 단계별 사고 일기장을 제공하여 복잡한 문제를 구조화하고 논리적으로 추론하도록 돕는 공식 MCP 서버
+   - 문제 해결을 단계별로 처리함
+   > Sequential thinking mcp 설치해줘
+
+3. Firecrawl MCP 
+   - 웹사이트를 대형 언어 모델(LLM)과 AI 애플리케이션이 바로 사용할 수 있는 깔끔한 
+   마크다운(Markdown)이나 구조화된 데이터(JSON)로 변환해 주는 AI 기반 웹 크롤링 및 스크래핑 플랫폼
+   - https://www.firecrawl.dev/
+
+========================================================
+
+fetch (ES6)
+   - 기존의 web에서는 비동기 요청을 보내기 위해 XML HTTP REQUEST(XHT) 객체를 생성했어야 했다. 
+   그러나 이러한 xhr의 요청의 상태나 변경에 따라 개발자의 의도에 맞게 사용하기가 어려워 이를 보완하기위해 
+   http 요청에 최적화 되고 추상화 되어있는 API들이 생겨나기 시작하였고 대표적으로 axios와 fetch이다.

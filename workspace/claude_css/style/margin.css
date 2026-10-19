@@ -1,0 +1,40 @@
+div {
+    width: 100px;
+    height: 100px;
+    background-color: orange;
+}
+
+/* 위 아래 마진이 겹치면 큰 값으로 들어간다. */
+.box1{
+    margin-bottom: 50px;
+}
+
+.box2 {
+    margin-top: 100px;
+}
+
+.box3 {
+    margin-left: 300px;
+    margin-right: 300px;
+
+    /* 4방향이 모두 다를 때 */
+    /* margin: 10px 40px 50px 60px; */
+
+    /* 2개가 공통 */
+    /* margin: 300px 0; */
+
+    /* 4개가 공통 */
+    /* margin: 300px; */
+}
+
+.box4 {
+    margin: 50px;
+}
+
+.box5 {
+    padding-bottom: 30px;
+}
+
+.box6 {
+    padding: 100px;
+}

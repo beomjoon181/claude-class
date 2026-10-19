@@ -1,0 +1,9 @@
+.box {
+    width: 100px;
+    height: 100px;
+    background-color: orange;
+}
+
+.box:first-child {
+    margin-bottom: 50px;
+}

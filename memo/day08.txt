@@ -1,0 +1,61 @@
+DOM API란?
+   - 문서의 객체 모델을 의미하며(Document Object Model), 흔히 말하는 div, span, input과 같은 요소들을 모두 DOM이라고 한다.
+   - HTML 태그들을 하나씩 객체화한 것.
+   - HTML 페이지의 내용과 모양을 제어하기 위해 사용되는 객체이다.
+   - HTML 태그 당 DOM 객체가 하나씩 생성된다.
+   - HTML 태그의 포함관계에 따라서 부모, 자식, 형제자매 관계로 구성된다.
+
+API란? (Aplication Programing Interface)
+   - 응용 프로그램 사이에서 동선에 사용되는 언어와 메세지를 이야기 한다.
+
+DOM selector
+   1) HttpCollection
+      - document.getElementById() 
+      - document.getElementsByClassName()
+      - document.getElementsByTagName() 
+   
+   2) NodeList
+      - document.getElementByName()
+      - document.querySelector()
+      - document.querySelectorAll()
+
+========================================================================
+
+이벤트 함수
+   - addEventListener ("이벤트명", 콜백함수 내의 옵션)
+
+자주 사용되는 이벤트
+   click - 요소를 클릭했을 때
+   mouseover -요소에 마우스를 올렸을 때
+   mouseleave -요소에서 마우스가 떠났을 때
+   mousedown - 요소를 누르고 마우스를 아직 때기 이전 상태
+   mouseup - 요소를 누르고 마우슬 땐 상태, 을 때 마우스 위치가 요소 위에 있어야함
+   mousemove - 마우스가 움직일 때마다
+   mousedown – 드래그 시작
+   mousewheal - 마우스 휠이 이동되었을 때
+   scroll - 스크롤의 변화가 있을 때
+   focus - 활성화 되어있을 때
+   blur - 포커스에서 벗어났을 때
+   keypress - 키를 누른 순간
+   keyup - 키를 누르고 있다가 땐 순간
+   keydown - 키를 누르고 때기 이전인 순간
+   change - 폼 필드의 속성이 변경되었을 때
+
+===========================================================================
+
+MCP란?
+   - MCP는 Model Context Protocol(모델 컨텍스트 프로토콜)의 약자로, AI 모델(특히 LLM)이 다양한 데이터 소스나 
+   도구(Tool)와 안전하고 표준화된 방식으로 연결될 수 있도록 돕는 오픈 소스 프로토콜입니다.
+   Anthropic(앤스로픽)사에서 처음 제안하여 오픈 소스로 공개했으며, 
+   현재 AI 생태계에서 빠르게 표준으로 자리 잡고 있습니다.
+   - https://code.claude.com/docs/ko/mcp
+
+===========================================================================
+
+Context7 MCP 공식 문서 및 설치 방법 링크
+   - 파일들마다 필요한 mcp를 모아놓은것 
+   - https://context7.com/
+   - https://github.com/upstash/context7#installation
+
+클로드의 mcp명령어
+	/mcp

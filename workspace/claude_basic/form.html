@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" placeholder="아이디(이메일)" />
+
+    <hr />
+
+    <!-- 자주 사용되는 input type 모음 -->
+    <p>text - 한 줄 텍스트 입력</p>
+    <input type="text" placeholder="이름을 입력하세요" />
+
+    <p>password - 비밀번호 입력 (문자가 ●로 표시됨)</p>
+    <input type="password" placeholder="비밀번호" />
+
+    <p>email - 이메일 형식 검증</p>
+    <input type="email" placeholder="example@email.com" />
+
+    <p>number - 숫자만 입력</p>
+    <input type="number" placeholder="나이" min="0" max="120" />
+
+    <p>tel - 전화번호 입력</p>
+    <input type="tel" placeholder="010-1234-5678" />
+
+    <p>date - 날짜 선택</p>
+    <input type="date" />
+
+    <p>time - 시간 선택</p>
+    <input type="time" />
+
+    <p>checkbox - 여러 항목 중 다중 선택</p>
+    <input type="checkbox" id="check1" />
+    <label for="check1">동의합니다</label>
+
+    <p>radio - 여러 항목 중 하나만 선택</p>
+    <input type="radio" name="gender" id="male" />
+    <label for="male">남자</label>
+    <input type="radio" name="gender" id="female" />
+    <label for="female">여자</label>
+
+    <p>file - 파일 업로드</p>
+    <input type="file" />
+
+    <p>range - 슬라이더로 값 선택</p>
+    <input type="range" min="0" max="100" />
+
+    <p>color - 색상 선택</p>
+    <input type="color" />
+
+    <p>submit - 폼 제출 버튼</p>
+    <input type="submit" value="제출" />
+
+    <p>button - 일반 버튼 (동작은 JS로 지정)</p>
+    <input type="button" value="클릭" />
+
+    <p>hidden - 화면에 보이지 않는 값 전달</p>
+    <input type="hidden" value="secret-value" />
+</body>
+</html>

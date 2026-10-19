@@ -1,0 +1,13 @@
+/* bg 클래스 - 배경이미지 스타일 */
+.bg {
+    /* images 폴더에서 hamster.jpg 파일을 배경이미지로 설정 */
+    background-image: url(../images/hamster.jpg);
+    /* 이미지를 컨테이너 크기에 맞춰서 확대/축소 (비율 유지하며 여백 없이) */
+    background-size: cover;
+    /* 이미지를 중앙에 정렬 */
+    background-position: center;
+    /* 너비를 부모 요소의 100%로 설정 */
+    width: 100%;
+    /* 높이를 뷰포트 전체 높이(100vh)로 설정 */
+    height: 100vh;
+}
