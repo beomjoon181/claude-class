@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "@prisma/client": "6.4.1",
+    "prisma": "6.4.1"
+  },
+  "type": "module",
+  "scripts": {
+    "minit": "prisma migrate dev --name init",
+    "mreset": "prisma migrate reset"
+  }
+}

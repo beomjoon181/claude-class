@@ -1,0 +1,75 @@
+RDMBS (relation data system)
+   - 관계형 데이터 베이스 시스템을 의미한다.
+   - 테이블끼리 서로 관계를 맺는다.
+   - 테이블은 엑셀 표와 비슷한 형태를 가지며 행은 정보를 열은 집합을 의미한다.
+   
+Table A (USER, INFOMATION, CUSTOMER)
+번호      이름      나이      아이디 
+1       홍길동     20      hgd1234
+2       이순신     30      lss7890
+3       장보고     40      jbg4567
+4       김영희     60      kyh8542
+
+Table B (ORDER)
+주문번호           번호           날짜          상품수량 
+20240408001       3         2024-04-06        5
+20240408001       4         2024-04-06        100
+20240408001       1         2024-04-06        35
+20240408001       2         2024-04-06        15
+
+즉 주문을 회원이 하니까 번호는 회원번호이다.
+
+한 사람의 정보를 가져오려면 어떤 것으로 가져와야할까?
+아이디, 번호
+
+구분점으로 쓸 수 있는 것을 PK
+primary key 즉 유일하다.
+
+===================================================
+
+Prisma ORM(Object Relational Mapping)
+   - Prisma는 Node.js와 TypeScript 환경에서 사용하는 현대적인 ORM이다.  
+   SQL을 직접 작성하지 않고, 스키마 파일(schema.prisma)을 기반으로  
+   객체(Object)와 데이터베이스 테이블을 자동으로 매핑해주는 기술이다.  
+   즉, 객체와 DB 테이블을 1:1로 연결하여 타입 안전성(Type-safety)을 유지하면서  
+   데이터를 조회, 저장, 수정, 삭제할 수 있다.
+
+주요 기능  
+   1. 스키마 기반 매핑: schema.prisma 파일을 통해 모델과 테이블 구조를 정의  
+   2. CRUD 자동화: Prisma Client의 create(), findMany(), update(), delete() 메서드로 SQL 자동 실행  
+   3. 타입 안전성(Type-safety): TypeScript를 기반으로 자동 타입 생성 및 코드 완성 지원  
+   4. 마이그레이션(Migrate): 스키마 변경 시 DB 구조 자동 반영  
+   5. 관계 매핑(Relation Mapping): @relation 키워드를 통해 Join 관계 자동 처리
+
+대표 ORM 프레임워크  
+   - JavaScript / TypeScript: Prisma, Sequelize, TypeORM  
+   - Python: SQLAlchemy, Django ORM  
+   - PHP: Doctrine, Eloquent(Laravel)
+
+장점  
+   - SQL 작성 없이 직관적인 API로 개발 가능  
+   - TypeScript 완벽 지원 (자동 타입 생성 및 코드 자동완성)  
+   - 빠른 개발 속도 및 높은 생산성  
+   - Prisma Migrate로 스키마 버전 관리 용이  
+   - DB 변경 시 최소 수정으로 대응 가능
+
+단점  
+   - 복잡한 SQL 제어 및 성능 튜닝이 어려움
+   - 일부 데이터베이스 전용 기능 사용에 제약 존재
+   - Prisma CLI 및 마이그레이션 관리에 익숙해져야 함
+
+Prisma 어노테이션
+1. @id
+   - 의미: 해당 필드를 테이블의 기본 키(Primary Key)로 지정
+
+2. @default(autoincrement())
+   - 의미: 정수형 필드에서 자동으로 1씩 증가하는 기본값 설정
+   - 주로 기본 키(id)에 사용
+
+3. @default(now())
+   - 의미: 레코드 생성 시 현재 시간 자동 입력
+   - 주로 createdAt, updatedAt 같은 timestamp 필드에 사용
+
+4. @unique
+   - 의미: 해당 컬럼 값의 중복을 허용하지 않음
+   - 주로 이메일, 사용자명 등 고유 식별 값에 사용

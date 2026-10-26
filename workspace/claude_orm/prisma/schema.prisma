@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+//테이블 설계
+model Member{
+  id Int @id @default(autoincrement())
+  memberEmail String @unique
+  memberPassword String
+  memberName String
+  memberAge Int
+  memberAddress String
+  memberCreatedAt DateTime @default(now())
+  posts Post[]
+
+  @@map("tbl_member")
+}
+
+model Post{
+  id Int @id @default(autoincrement())
+  postTitle String
+  postContent String @db.Text
+  postCreatedAt DateTime @default(now())
+  memberId Int
+  member Member @relation(fields: [memberId], references: [id])
+
+  @@map("tbl_post")
+}
+
+model Product{
+  id Int @id @default(autoincrement())
+  productName String
+  productPrice Int
+  productStock Int
+  productDelivery DateTime
+  productCreatedAt DateTime @default(now())
+
+  @@map("tbl_product")
+}

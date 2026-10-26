@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>member</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+    <style>
+        :root {
+            --primary: oklch(0.52 0.14 262);
+            --primary-hover: oklch(0.46 0.14 262);
+            --primary-soft: oklch(0.95 0.03 262);
+            --text: #1d1f24;
+            --sub: #6b6f78;
+            --line: #e4e5e9;
+            --danger: #d6453b;
+        }
+        * { box-sizing: border-box }
+        body { margin: 0; background: #fff; font-family: Pretendard, -apple-system, "Apple SD Gothic Neo", sans-serif; color: var(--text); -webkit-font-smoothing: antialiased }
+        input::placeholder { color: #9a9da5 }
+        [hidden] { display: none !important }
+
+        .wrap { min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 56px 20px 40px }
+        .logo { font-size: 40px; font-weight: 800; letter-spacing: -1.5px; color: var(--primary); cursor: pointer; user-select: none; margin-bottom: 40px }
+        .logo span { color: var(--text) }
+        .screen { width: 100%; max-width: 520px; display: flex; flex-direction: column; align-items: center }
+        .card { width: 100%; border: 1px solid var(--line); border-radius: 20px; padding: 44px 50px 48px; display: flex; flex-direction: column }
+        .footer { margin-top: auto; padding-top: 56px; font-size: 12px; color: #9a9da5 }
+
+        .title { font-size: 22px; font-weight: 700; letter-spacing: -0.5px }
+        .desc { font-size: 14px; color: var(--sub); margin-top: 6px }
+        .star { color: var(--primary) }
+        .section { font-size: 13px; font-weight: 600; color: var(--sub); margin-top: 28px }
+
+        .input { width: 100%; min-width: 0; border: none; border-bottom: 1px solid var(--line); padding: 16px 4px 12px; font: inherit; font-size: 16px; outline: none; background: transparent }
+        .input:focus { border-bottom-color: var(--primary) }
+        .err { color: var(--danger); font-size: 13px; padding: 6px 4px 0; min-height: 22px }
+        .row { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 20px }
+
+        .btn { height: 52px; border: none; border-radius: 10px; background: var(--primary); color: #fff; font: inherit; font-size: 17px; font-weight: 700; cursor: pointer }
+        .btn:hover { background: var(--primary-hover) }
+        .btn-line { height: 52px; border: 1px solid #d8d9dd; border-radius: 10px; background: #fff; color: var(--text); font: inherit; font-size: 16px; font-weight: 600; cursor: pointer }
+        .btn-line:hover { background: #f6f7f8 }
+        .btn-danger { background: var(--danger) }
+        .btn-danger:hover { background: #bf3a31 }
+
+        .links { display: flex; gap: 12px; align-items: center; font-size: 14px; color: var(--sub); margin-top: 28px }
+        .links .bar { width: 1px; height: 11px; background: #d8d9dd }
+        .link { cursor: pointer }
+        .link-primary { cursor: pointer; color: var(--primary); font-weight: 600 }
+        .check { display: flex; align-items: center; gap: 8px; font-size: 14px; margin: 28px 0 14px; cursor: pointer; width: fit-content }
+        .check input { width: 18px; height: 18px; margin: 0; accent-color: var(--primary) }
+
+        /* 마이페이지 */
+        .profile { display: flex; align-items: center; gap: 16px }
+        .avatar { width: 56px; height: 56px; border-radius: 50%; background: var(--primary-soft); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; flex-shrink: 0 }
+        .profile-text { min-width: 0; flex: 1 }
+        .profile-name { font-size: 20px; font-weight: 700; letter-spacing: -0.4px }
+        .profile-email { font-size: 14px; color: var(--sub); margin-top: 2px; overflow: hidden; text-overflow: ellipsis }
+        .chip { font-size: 13px; color: var(--sub); cursor: pointer; border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; flex-shrink: 0; background: #fff; font-family: inherit }
+        .chip:hover { border-color: #b9bbc2 }
+        .divider { height: 1px; background: var(--line); margin: 32px 0 8px }
+        .info { display: grid; grid-template-columns: 96px minmax(0, 1fr); padding: 14px 0; border-bottom: 1px solid #f0f1f3; font-size: 15px }
+        .info:last-of-type { border-bottom: none }
+        .info span:first-child { color: var(--sub) }
+        .info span:last-child { overflow-wrap: anywhere }
+        .num { font-variant-numeric: tabular-nums }
+        .btns { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 10px; margin-top: 36px }
+        .withdraw { cursor: pointer; color: var(--sub); text-decoration: underline; text-underline-offset: 3px }
+        .withdraw:hover { color: var(--danger) }
+
+        /* 탈퇴 확인 모달 */
+        .modal-bg { position: fixed; inset: 0; background: rgba(20, 22, 28, 0.45); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 10 }
+        .modal { width: 100%; max-width: 380px; background: #fff; border-radius: 18px; padding: 32px 28px 24px; display: flex; flex-direction: column }
+        .modal-title { font-size: 19px; font-weight: 700 }
+        .modal-desc { font-size: 14px; color: var(--sub); margin-top: 10px; line-height: 1.6 }
+        .modal-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 28px }
+        .modal-btns button { height: 48px; font-size: 15px }
+
+        .toast { position: fixed; left: 50%; bottom: 36px; transform: translateX(-50%); background: var(--text); color: #fff; font-size: 14px; padding: 12px 20px; border-radius: 999px; z-index: 20 }
+
+        @media (max-width: 480px) {
+            .card { padding: 36px 24px 40px }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="logo" id="logo">member<span>.</span></div>
+
+        <!-- 로그인 -->
+        <div class="screen" id="loginScreen">
+            <form class="card" id="loginForm" style="padding-top:56px">
+                <input class="input" type="email" name="email" placeholder="이메일">
+                <input class="input" type="password" name="password" placeholder="비밀번호" style="margin-top:14px">
+                <div class="err" data-err="login"></div>
+                <label class="check"><input type="checkbox" name="keep">로그인 상태 유지</label>
+                <button class="btn" type="submit">로그인</button>
+            </form>
+            <div class="links">
+                <span class="link">비밀번호 찾기</span>
+                <span class="bar"></span>
+                <span class="link-primary" data-go="signup">회원가입</span>
+            </div>
+        </div>
+
+        <!-- 회원가입 -->
+        <div class="screen" id="signupScreen" hidden>
+            <form class="card" id="signupForm" novalidate>
+                <div class="title">회원가입</div>
+                <div class="desc"><span class="star">*</span> 표시는 필수 입력 항목입니다.</div>
+
+                <div class="section" style="margin-top:34px">계정 정보</div>
+                <input class="input" type="email" name="email" placeholder="이메일 *" maxlength="100">
+                <div class="err" data-err="email"></div>
+                <input class="input" type="password" name="password" placeholder="비밀번호 * (8자 이상)">
+                <div class="err" data-err="password"></div>
+                <input class="input" type="password" name="password2" placeholder="비밀번호 확인 *">
+                <div class="err" data-err="password2"></div>
+
+                <div class="section">개인 정보</div>
+                <div class="row">
+                    <input class="input" name="name" placeholder="이름" maxlength="50">
+                    <input class="input" name="age" inputmode="numeric" placeholder="나이">
+                </div>
+                <div class="err" data-err="age"></div>
+                <input class="input" type="tel" name="phone" placeholder="휴대폰 번호 *">
+                <div class="err" data-err="phone"></div>
+                <input class="input" name="address" placeholder="주소" maxlength="255">
+
+                <button class="btn" type="submit" style="margin-top:40px">가입하기</button>
+            </form>
+            <div class="links">이미 회원이신가요?<span class="link-primary" data-go="login">로그인</span></div>
+        </div>
+
+        <!-- 마이페이지 -->
+        <div class="screen" id="mypageScreen" hidden>
+            <div class="card" style="padding-top:40px;padding-bottom:44px">
+                <div class="profile">
+                    <div class="avatar" id="meInitial"></div>
+                    <div class="profile-text">
+                        <div class="profile-name" id="meTitle"></div>
+                        <div class="profile-email" id="meEmail"></div>
+                    </div>
+                    <button class="chip" id="logoutBtn" type="button">로그아웃</button>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- 조회 -->
+                <div id="viewBox">
+                    <div class="section" style="margin-top:0;padding:16px 0 4px">회원 정보</div>
+                    <div class="info"><span>회원번호</span><span class="num" data-me="no"></span></div>
+                    <div class="info"><span>이메일</span><span data-me="email"></span></div>
+                    <div class="info"><span>비밀번호</span><span style="letter-spacing:2px">••••••••</span></div>
+                    <div class="info"><span>이름</span><span data-me="name"></span></div>
+                    <div class="info"><span>나이</span><span data-me="age"></span></div>
+                    <div class="info"><span>휴대폰</span><span class="num" data-me="phone"></span></div>
+                    <div class="info"><span>주소</span><span data-me="address"></span></div>
+                    <button class="btn" id="editBtn" type="button" style="width:100%;margin-top:32px">회원정보 수정</button>
+                </div>
+
+                <!-- 수정 -->
+                <form id="editForm" novalidate hidden>
+                    <div class="section" style="margin-top:0;padding-top:16px">회원 정보 수정</div>
+                    <input class="input" type="email" name="email" placeholder="이메일 *" maxlength="100">
+                    <div class="err" data-err="email"></div>
+                    <input class="input" type="password" name="password" placeholder="새 비밀번호 (변경 시에만 입력)">
+                    <div class="err" data-err="password"></div>
+                    <div class="row">
+                        <input class="input" name="name" placeholder="이름" maxlength="50">
+                        <input class="input" name="age" inputmode="numeric" placeholder="나이">
+                    </div>
+                    <div class="err" data-err="age"></div>
+                    <input class="input" type="tel" name="phone" placeholder="휴대폰 번호 *">
+                    <div class="err" data-err="phone"></div>
+                    <input class="input" name="address" placeholder="주소" maxlength="255">
+                    <div class="btns">
+                        <button class="btn-line" type="button" id="cancelBtn">취소</button>
+                        <button class="btn" type="submit">저장</button>
+                    </div>
+                </form>
+            </div>
+            <div class="links"><span class="withdraw" id="withdrawBtn">회원탈퇴</span></div>
+        </div>
+
+        <div class="footer">© member Corp.</div>
+    </div>
+
+    <!-- 탈퇴 확인 -->
+    <div class="modal-bg" id="deleteModal" hidden>
+        <div class="modal">
+            <div class="modal-title">정말 탈퇴하시겠어요?</div>
+            <div class="modal-desc">탈퇴하면 회원 정보가 모두 삭제되며 복구할 수 없습니다.</div>
+            <div class="modal-btns">
+                <button class="btn-line" type="button" id="deleteCancelBtn">취소</button>
+                <button class="btn btn-danger" type="button" id="deleteOkBtn">탈퇴하기</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast" hidden></div>
+
+    <script src="mypage.js"></script>
+</body>
+</html>

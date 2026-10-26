@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>책갈피 게시판</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+    <style>
+        :root {
+            --primary: #2fa8ee;
+            --primary-hover: #1a9be6;
+            --primary-soft: #e8f6fe;
+            --text: #1d2329;
+            --sub: #5b6670;
+            --muted: #8a949e;
+            --line: #eef1f4;
+            --border: #d9e0e6;
+            --danger: #e5484d;
+        }
+        * { box-sizing: border-box }
+        body { margin: 0; background: #fff; font-family: Pretendard, -apple-system, "Apple SD Gothic Neo", sans-serif; color: var(--text); -webkit-font-smoothing: antialiased }
+        input, textarea, select, button { font-family: inherit }
+        [hidden] { display: none !important }
+
+        .page { min-height: 100vh; display: flex; flex-direction: column }
+        .inner { max-width: 1080px; margin: 0 auto; padding-left: 24px; padding-right: 24px }
+
+        /* 헤더 */
+        header { border-bottom: 1px solid var(--line); background: #fff; position: sticky; top: 0; z-index: 5 }
+        header .inner { padding-top: 16px; padding-bottom: 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px }
+        .brand { all: unset; cursor: pointer; display: flex; align-items: center; gap: 8px }
+        .brand-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--primary) }
+        .brand-name { font-size: 20px; font-weight: 800; letter-spacing: -0.5px }
+        .brand-tag { font-size: 13px; font-weight: 600; color: var(--primary); background: var(--primary-soft); padding: 3px 9px; border-radius: 999px }
+        .header-right { display: flex; align-items: center; gap: 12px }
+        .who { font-size: 14px; color: var(--sub) }
+        .who a { color: var(--primary-hover); text-decoration: none; font-weight: 600 }
+        .pill { border: 1px solid var(--border); background: #fff; border-radius: 999px; padding: 9px 16px; font-size: 14px; font-weight: 600; color: var(--text); cursor: pointer }
+        .pill:hover { border-color: var(--primary); color: var(--primary-hover) }
+
+        main { flex: 1; width: 100%; padding-top: 28px; padding-bottom: 72px }
+        .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 20px }
+        .head h1 { margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.6px }
+        .crumb { font-size: 13px; color: var(--muted) }
+
+        /* 버튼 */
+        .btn { border: 0; background: var(--primary); color: #fff; border-radius: 12px; height: 48px; padding: 0 26px; font-size: 15px; font-weight: 700; cursor: pointer }
+        .btn:hover { background: var(--primary-hover) }
+        .btn-line { border: 1px solid var(--border); background: #fff; border-radius: 12px; height: 48px; padding: 0 22px; font-size: 15px; font-weight: 600; color: var(--text); cursor: pointer }
+        .btn-line:hover { border-color: var(--primary); color: var(--primary-hover) }
+        .btn-del { border: 1px solid #ffd3d0; background: #fff; border-radius: 12px; height: 48px; padding: 0 22px; font-size: 15px; font-weight: 600; color: var(--danger); cursor: pointer }
+        .btn-del:hover { background: #fff4f3 }
+
+        /* 배너 */
+        .banner { background: #3db1f0; border-radius: 24px; padding: 36px 40px; color: #fff; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between; margin-bottom: 44px }
+        .banner h2 { margin: 0 0 10px; font-size: 26px; font-weight: 800; letter-spacing: -0.5px }
+        .banner p { margin: 0; font-size: 15px; line-height: 1.6 }
+        .banner button { border: 0; background: #1580c9; color: #fff; border-radius: 12px; padding: 14px 24px; font-size: 15px; font-weight: 700; cursor: pointer }
+        .banner button:hover { background: #0f6fb0 }
+
+        /* 검색 */
+        .search { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; margin-bottom: 22px }
+        .count { font-size: 14px; color: var(--sub) }
+        .count strong { color: var(--text) }
+        .search-box { display: flex; gap: 8px; flex-wrap: wrap; flex: 1; justify-content: flex-end; min-width: 280px }
+        .search select { border: 1px solid var(--border); border-radius: 12px; padding: 0 14px; height: 46px; font-size: 14px; background: #fff; color: var(--text) }
+        .search-input { position: relative; flex: 1; max-width: 360px; min-width: 180px }
+        .search-input::before { content: ""; position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; border: 2px solid var(--muted); border-radius: 50% }
+        .search-input input { width: 100%; height: 46px; border: 1px solid var(--border); border-radius: 12px; padding: 0 14px 0 40px; font-size: 14px; outline: none }
+        .search-input input:focus { border-color: var(--primary) }
+        .search .btn { height: 46px; padding: 0 22px; font-size: 14px }
+        .search .btn-line { height: 46px; padding: 0 16px; font-size: 14px; color: var(--sub) }
+
+        .empty { background: #f5f7f9; border-radius: 24px; padding: 64px 24px; text-align: center; display: flex; flex-direction: column; gap: 8px }
+        .empty strong { font-size: 18px }
+        .empty span { font-size: 14px; color: var(--sub) }
+
+        /* 카드 목록 */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); gap: 20px }
+        .card { position: relative; background: #fff; border: 1px solid var(--line); border-radius: 28px; padding: 26px 28px 24px; box-shadow: 0 6px 20px rgba(29, 35, 41, 0.06); cursor: pointer; display: flex; flex-direction: column; gap: 12px; min-height: 230px; transition: transform .15s, box-shadow .15s }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(29, 35, 41, 0.10) }
+        .card-tag { font-size: 12px; font-weight: 600; color: var(--primary-hover) }
+        .card h3 { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.4 }
+        .card p { margin: 0; font-size: 14px; line-height: 1.7; color: #4a545e; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden }
+        .card-foot { margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; padding-right: 64px }
+        .card-author { font-size: 13px; font-weight: 600 }
+        .card-date { font-size: 12px; color: var(--muted) }
+        .avatar { border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #fff; flex-shrink: 0 }
+        .card .avatar { position: absolute; right: 20px; bottom: 18px; width: 48px; height: 48px; font-size: 17px }
+
+        /* 페이지네이션 */
+        .pager { display: flex; justify-content: center; align-items: center; gap: 4px; margin-top: 40px; flex-wrap: wrap }
+        .pager button { border: 0; background: transparent; width: 36px; height: 36px; border-radius: 50%; color: #4a545e; font-size: 14px; cursor: pointer }
+        .pager button:hover:not(:disabled) { background: var(--primary-soft); color: var(--primary-hover) }
+        .pager button:disabled { cursor: default; opacity: 0.4 }
+        .pager .arrow { color: var(--muted); font-size: 15px }
+        .pager .active { background: var(--primary); color: #fff; font-weight: 700; opacity: 1 !important }
+        .pager .active:hover { background: var(--primary) !important; color: #fff !important }
+
+        /* 조회 */
+        .post { background: #fff; border: 1px solid var(--line); border-radius: 28px; box-shadow: 0 6px 20px rgba(29, 35, 41, 0.06); overflow: hidden }
+        .post-head { padding: 36px 40px 28px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 14px }
+        .badge { align-self: flex-start; font-size: 13px; font-weight: 600; color: var(--primary-hover); background: var(--primary-soft); padding: 5px 12px; border-radius: 999px }
+        .badge.closed { color: var(--sub); background: #f0f3f6 }
+        .post-head h2 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.4; overflow-wrap: anywhere }
+        .post-meta { display: flex; align-items: center; gap: 12px }
+        .post-meta .avatar { width: 40px; height: 40px; font-size: 15px }
+        .post-author { font-size: 14px; font-weight: 600 }
+        .post-date { font-size: 13px; color: var(--muted); margin-top: 2px }
+        .post-body { padding: 32px 40px 44px; font-size: 16px; line-height: 1.85; color: #333b44; white-space: pre-wrap; overflow-wrap: anywhere; min-height: 220px }
+        .post-btns { display: flex; justify-content: space-between; gap: 10px; margin-top: 24px; flex-wrap: wrap }
+        .post-btns div { display: flex; gap: 10px }
+        .near { margin-top: 32px; border-top: 1px solid var(--line); display: flex; flex-direction: column }
+        .near button { all: unset; cursor: pointer; display: flex; gap: 20px; padding: 16px 8px; border-bottom: 1px solid var(--line); font-size: 14px }
+        .near button:hover { background: #f8fafb }
+        .near span:first-child { color: var(--muted); width: 48px; flex-shrink: 0 }
+        .near span:last-child { color: #333b44; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+
+        /* 작성 / 수정 */
+        .form { background: #fff; border: 1px solid var(--line); border-radius: 28px; box-shadow: 0 6px 20px rgba(29, 35, 41, 0.06); padding: 36px 40px; display: flex; flex-direction: column; gap: 24px }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px }
+        .field { display: flex; flex-direction: column; gap: 8px }
+        .label { font-size: 14px; font-weight: 700; display: flex; justify-content: space-between }
+        .label .star { color: var(--primary) }
+        .label .len { font-weight: 500; color: var(--muted) }
+        .field input, .field select, .field textarea { border: 1px solid var(--border); border-radius: 12px; font-size: 15px; outline: none; background: #fff; color: var(--text) }
+        .field input, .field select { height: 50px; padding: 0 16px }
+        .field input:read-only { background: #f5f7f9; color: var(--sub) }
+        .field textarea { border-radius: 16px; padding: 16px; line-height: 1.75; resize: vertical }
+        .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--primary) }
+        .err { font-size: 13px; color: var(--danger) }
+        .err:empty { display: none }
+        .form-btns { display: flex; justify-content: center; gap: 10px; padding-top: 4px }
+        .form-btns button { height: 52px; min-width: 140px }
+
+        footer { background: #f5f7f9; border-top: 1px solid var(--line) }
+        footer .inner { padding-top: 28px; padding-bottom: 28px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 13px; color: var(--muted) }
+        footer strong { color: var(--sub) }
+
+        /* 삭제 확인 모달 */
+        .modal-bg { position: fixed; inset: 0; background: rgba(20, 26, 32, 0.45); display: flex; align-items: center; justify-content: center; padding: 24px; z-index: 20 }
+        .modal { background: #fff; border-radius: 24px; padding: 32px; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 10px; text-align: center }
+        .modal strong { font-size: 19px }
+        .modal span { font-size: 14px; color: var(--sub); line-height: 1.6 }
+        .modal-btns { display: flex; gap: 8px; margin-top: 14px }
+        .modal-btns button { flex: 1 }
+        .modal-btns .btn { background: var(--danger) }
+
+        .toast { position: fixed; left: 50%; bottom: 32px; transform: translateX(-50%); background: var(--text); color: #fff; border-radius: 999px; padding: 12px 22px; font-size: 14px; font-weight: 600; z-index: 30 }
+
+        @media (max-width: 600px) {
+            .inner { padding-left: 16px; padding-right: 16px }
+            .banner, .form { padding: 28px 22px }
+            .post-head { padding: 28px 22px 22px }
+            .post-body { padding: 24px 22px 32px }
+            .who { display: none }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div class="inner">
+                <button class="brand" id="brand">
+                    <span class="brand-dot"></span>
+                    <span class="brand-name">책갈피</span>
+                    <span class="brand-tag">게시판</span>
+                </button>
+                <div class="header-right">
+                    <span class="who" id="who"></span>
+                    <button class="pill" data-action="write">글쓰기 ✎</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="inner">
+            <!-- 목록 -->
+            <section id="listView">
+                <div class="head">
+                    <h1>게시판</h1>
+                    <span class="crumb">홈 › 게시판</span>
+                </div>
+                <div class="banner">
+                    <div>
+                        <h2>여러분의 이야기를 기다려요!</h2>
+                        <p>학습 후기, 궁금한 점, 나누고 싶은 팁을 자유롭게 남겨 주세요.</p>
+                    </div>
+                    <button data-action="write">새 글 작성하기</button>
+                </div>
+
+                <form class="search" id="searchForm">
+                    <span class="count">모두 <strong id="totalCount">0</strong>개의 글이 있어요</span>
+                    <div class="search-box">
+                        <select name="field">
+                            <option value="all">제목+내용</option>
+                            <option value="title">제목</option>
+                            <option value="content">내용</option>
+                        </select>
+                        <div class="search-input">
+                            <input name="query" placeholder="게시글 제목 또는 내용 검색">
+                        </div>
+                        <button class="btn" type="submit">검색</button>
+                        <button class="btn-line" type="button" id="clearSearch" hidden>초기화</button>
+                    </div>
+                </form>
+
+                <div class="empty" id="empty" hidden>
+                    <strong id="emptyTitle"></strong>
+                    <span id="emptyDesc"></span>
+                </div>
+                <div class="grid" id="grid"></div>
+                <nav class="pager" id="pager"></nav>
+            </section>
+
+            <!-- 조회 -->
+            <section id="detailView" hidden>
+                <div class="head">
+                    <h1>게시글 조회</h1>
+                    <span class="crumb">홈 › 게시판 › 조회</span>
+                </div>
+                <article class="post">
+                    <div class="post-head">
+                        <span class="badge" id="vBadge"></span>
+                        <h2 id="vTitle"></h2>
+                        <div class="post-meta">
+                            <span class="avatar" id="vAvatar"></span>
+                            <div>
+                                <div class="post-author" id="vAuthor"></div>
+                                <div class="post-date" id="vDate"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="post-body" id="vContent"></div>
+                </article>
+                <div class="post-btns">
+                    <button class="btn-line" data-action="list">목록으로</button>
+                    <div id="ownerBtns">
+                        <button class="btn-del" id="deleteBtn">삭제</button>
+                        <button class="btn" id="editBtn">수정</button>
+                    </div>
+                </div>
+                <div class="near">
+                    <button id="prevBtn" hidden><span>이전글</span><span id="prevTitle"></span></button>
+                    <button id="nextBtn" hidden><span>다음글</span><span id="nextTitle"></span></button>
+                </div>
+            </section>
+
+            <!-- 작성 / 수정 -->
+            <section id="formView" hidden>
+                <div class="head">
+                    <h1 id="formTitle">게시글 작성</h1>
+                    <span class="crumb">홈 › 게시판 › <span id="formCrumb">게시글 작성</span></span>
+                </div>
+                <form class="form" id="postForm" novalidate>
+                    <div class="form-row">
+                        <label class="field">
+                            <span class="label">공개여부</span>
+                            <select name="boardIsOpen">
+                                <option value="true">공개</option>
+                                <option value="false">비공개</option>
+                            </select>
+                        </label>
+                        <label class="field">
+                            <span class="label">작성자</span>
+                            <input name="author" readonly>
+                        </label>
+                    </div>
+                    <label class="field">
+                        <span class="label"><span>제목 <span class="star">*</span></span></span>
+                        <input name="boardTitle" placeholder="제목을 입력해 주세요" maxlength="60">
+                        <span class="err" data-err="boardTitle"></span>
+                    </label>
+                    <label class="field">
+                        <span class="label">
+                            <span>내용 <span class="star">*</span></span>
+                            <span class="len"><span id="contentLen">0</span> / 2000</span>
+                        </span>
+                        <textarea name="boardContent" placeholder="내용을 입력해 주세요" maxlength="2000" rows="12"></textarea>
+                        <span class="err" data-err="boardContent"></span>
+                    </label>
+                    <div class="form-btns">
+                        <button class="btn-line" type="button" id="cancelBtn">취소</button>
+                        <button class="btn" type="submit" id="submitBtn">등록하기</button>
+                    </div>
+                </form>
+            </section>
+        </main>
+
+        <footer>
+            <div class="inner">
+                <strong>책갈피</strong>
+                <span>© 2026 책갈피. All rights reserved.</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 삭제 확인 -->
+    <div class="modal-bg" id="deleteModal" hidden>
+        <div class="modal">
+            <strong>게시글을 삭제할까요?</strong>
+            <span>삭제한 글은 다시 복구할 수 없어요.</span>
+            <div class="modal-btns">
+                <button class="btn-line" id="deleteCancelBtn">취소</button>
+                <button class="btn" id="deleteOkBtn">삭제</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast" hidden></div>
+
+    <script src="board.js"></script>
+</body>
+</html>

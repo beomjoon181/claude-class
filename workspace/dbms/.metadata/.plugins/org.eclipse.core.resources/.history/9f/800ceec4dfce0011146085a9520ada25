@@ -1,0 +1,7 @@
+-- Ctrl + Shift + [+] or [-]
+-- Ctrl + [+] or [-]
+-- Ctrl + /: 주석
+-- Ctrl + Enter: 한 줄 실행
+select now();
+select * from tbl_member;
+select * from tbl_product;
